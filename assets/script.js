@@ -247,7 +247,18 @@
     }, 350);
   }
 
+  function resetGoButton() {
+    goBtn.disabled = false;
+    goBtn.classList.remove("is-loading");
+  }
+
   goBtn.addEventListener("click", submit);
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      resetGoButton();
+    }
+  });
 
   setEnv(currentEnv);
   setMode(currentMode);
