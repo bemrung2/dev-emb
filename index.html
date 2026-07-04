@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>KB EMFI 바로가기</title>
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <main class="card">
+    <header class="card__header">
+      <div class="logo-badge">KB</div>
+      <h1>EMFI 바로가기</h1>
+      <p class="subtitle">코드를 입력하면 바로 이동해드려요</p>
+    </header>
+
+    <div class="toggle" role="tablist" aria-label="이동 모드 선택">
+      <button type="button" class="toggle__option is-active" data-mode="partner" role="tab" aria-selected="true">
+        제휴사 코드
+      </button>
+      <button type="button" class="toggle__option" data-mode="product" role="tab" aria-selected="false">
+        상품 목록
+      </button>
+      <span class="toggle__thumb" aria-hidden="true"></span>
+    </div>
+
+    <!-- Mode 1: 제휴사 코드 입력 -->
+    <section class="panel is-active" id="panel-partner" role="tabpanel">
+      <label class="field-label" for="input-partner">제휴사 코드</label>
+      <div class="field" data-field="partner">
+        <input
+          id="input-partner"
+          class="field__input field__input--mono"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          maxlength="5"
+          placeholder="ABC12"
+        />
+        <span class="field__hint">영문 대문자 + 숫자 5자리</span>
+      </div>
+      <p class="error-msg" id="error-partner" role="alert"></p>
+      <p class="preview" id="preview-partner"></p>
+    </section>
+
+    <!-- Mode 2: 페이지 ID 입력 -->
+    <section class="panel" id="panel-product" role="tabpanel">
+      <label class="field-label" for="input-product">페이지 ID</label>
+      <div class="field" data-field="product">
+        <input
+          id="input-product"
+          class="field__input field__input--mono"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          maxlength="10"
+          placeholder="C111966"
+        />
+        <span class="field__hint">영문 + 숫자 조합 (예: C111966)</span>
+      </div>
+      <p class="error-msg" id="error-product" role="alert"></p>
+      <p class="preview" id="preview-product"></p>
+    </section>
+
+    <button type="button" class="go-btn" id="go-btn">
+      <span class="go-btn__label">이동하기</span>
+      <span class="go-btn__spinner" aria-hidden="true"></span>
+    </button>
+
+    <footer class="card__footer">
+      <p id="footer-desc">제휴사 코드로 EMFI 페이지에 접속합니다.</p>
+    </footer>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
