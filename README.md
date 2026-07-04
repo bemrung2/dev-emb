@@ -24,5 +24,8 @@ npx serve .
 
 ## 배포
 
-`main` 브랜치에 반영되면 GitHub Pages(`.github/workflows/pages.yml`)를 통해
-자동으로 배포됩니다.
+이 브랜치(`claude/new-repository-setup-lfyf4v`, 저장소 기본 브랜치)에 반영되면
+GitHub Pages(`.github/workflows/pages.yml`)를 통해 자동으로 배포됩니다.
+
+배포 전, 저장소 Settings → Pages → Build and deployment → Source에서
+**GitHub Actions**를 한 번 선택해야 최초 배포가 활성화됩니다.
