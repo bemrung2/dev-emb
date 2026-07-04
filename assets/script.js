@@ -24,11 +24,11 @@
     { id: "C111974", name: "외화 선물하기" },
     { id: "C111971", name: "비회원 환전" },
     {
-      id: "C111802",
+      id: "C111963",
       name: "KB 모니모 매일이자 통장",
       devStagingOnly: true,
       noPartnerCode: true,
-      restrictionNote: "모니모는 제휴사 코드 없이, 개발·스테이징 환경에서만 확인할 수 있는 상품이에요.",
+      restrictionNote: "모니모 매일이자 통장은 제휴사 코드 없이, 개발·스테이징 환경에서만 확인할 수 있는 상품이에요.",
     },
   ];
 
