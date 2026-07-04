@@ -33,7 +33,7 @@
   };
 
   var SUBTITLES = {
-    partner: "브릿지페이지(C111966)로 이동해요",
+    partner: "브릿지페이지(C111966) 경유해 이동해요",
     product: "페이지ID로 바로 이동해요",
   };
 
