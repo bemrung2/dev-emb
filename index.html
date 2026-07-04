@@ -79,21 +79,31 @@
       </div>
       <p class="field-caption">선택한 상품 페이지로 바로 이동해요.</p>
 
-      <label class="field-label field-label--sub" for="input-product-code">
-        제휴사 코드 <span class="optional-badge">선택</span>
-      </label>
-      <input
-        id="input-product-code"
-        class="field__input field__input--mono"
-        type="text"
-        inputmode="text"
-        autocomplete="off"
-        autocapitalize="characters"
-        spellcheck="false"
-        maxlength="5"
-        placeholder="KBB01"
-      />
-      <p class="field-caption" id="caption-product-code">비워두면 기본 코드 <strong>KBB01</strong>로 이동해요.</p>
+      <div class="product-alert" id="product-alert" role="status">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span id="product-alert-text">개발·스테이징 환경에서만 확인할 수 있는 상품이에요.</span>
+      </div>
+
+      <div class="product-code-group" id="product-code-group">
+        <label class="field-label field-label--sub" for="input-product-code">
+          제휴사 코드 <span class="optional-badge">선택</span>
+        </label>
+        <input
+          id="input-product-code"
+          class="field__input field__input--mono"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          maxlength="5"
+          placeholder="KBB01"
+        />
+        <p class="field-caption" id="caption-product-code">비워두면 기본 코드 <strong>KBB01</strong>로 이동해요.</p>
+      </div>
     </section>
 
     <button type="button" class="go-btn" id="go-btn">

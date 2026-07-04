@@ -23,7 +23,19 @@
     { id: "C112646", name: "가맹점등록/결제계좌변경" },
     { id: "C111974", name: "외화 선물하기" },
     { id: "C111971", name: "비회원 환전" },
+    {
+      id: "C111802",
+      name: "KB 모니모 매일이자 통장",
+      devStagingOnly: true,
+      noPartnerCode: true,
+      restrictionNote: "모니모는 제휴사 코드 없이, 개발·스테이징 환경에서만 확인할 수 있는 상품이에요.",
+    },
   ];
+
+  var PRODUCTS_BY_ID = {};
+  PRODUCTS.forEach(function (product) {
+    PRODUCTS_BY_ID[product.id] = product;
+  });
 
   var CAPTIONS = {
     partner: "영문 대문자 + 숫자 5자리를 입력하면 해당 제휴사 코드로 이동해요.",
@@ -49,8 +61,12 @@
   var partnerInput = document.getElementById("input-partner");
   var partnerCaption = document.getElementById("caption-partner");
   var productSelect = document.getElementById("select-product");
+  var productCodeGroup = document.getElementById("product-code-group");
   var productCodeInput = document.getElementById("input-product-code");
   var productCodeCaption = document.getElementById("caption-product-code");
+  var productAlert = document.getElementById("product-alert");
+  var productAlertText = document.getElementById("product-alert-text");
+  var prodEnvButton = document.querySelector('.env-switch__option[data-env="prod"]');
   var subtitleEl = document.getElementById("subtitle");
   var goBtn = document.getElementById("go-btn");
 
@@ -87,6 +103,25 @@
     cardEl.classList.remove("env-dev", "env-staging", "env-prod");
     cardEl.classList.add("env-" + env);
     envDomainEl.textContent = ENVIRONMENTS[env].domain;
+  }
+
+  function updateProductUI() {
+    var product = PRODUCTS_BY_ID[productSelect.value];
+    var restricted = !!(product && product.devStagingOnly);
+    var noCode = !!(product && product.noPartnerCode);
+
+    productCodeGroup.classList.toggle("is-hidden", noCode);
+    productAlert.classList.toggle("is-visible", restricted || noCode);
+    if (product && product.restrictionNote) {
+      productAlertText.textContent = product.restrictionNote;
+    }
+
+    prodEnvButton.disabled = restricted;
+    prodEnvButton.title = restricted ? "모니모는 운영 환경에서 이용할 수 없어요." : "";
+
+    if (restricted && currentEnv === "prod") {
+      setEnv("dev");
+    }
   }
 
   function setMode(mode) {
@@ -165,6 +200,8 @@
   bindSanitizedInput(partnerInput, resetPartnerState);
   bindSanitizedInput(productCodeInput, resetProductCodeState);
 
+  productSelect.addEventListener("change", updateProductUI);
+
   function submit() {
     var url;
     var endpoint = getEndpoint();
@@ -180,21 +217,27 @@
       url = endpoint + "?page=" + FIXED_PAGE_ID + "&alianCoCd=" + code;
     } else {
       var productId = productSelect.value;
-      var rawCode = productCodeInput.value.trim();
-      var partnerCode;
+      var product = PRODUCTS_BY_ID[productId];
 
-      if (rawCode === "") {
-        partnerCode = DEFAULT_PARTNER_CODE;
-      } else if (CODE_PATTERN.test(rawCode)) {
-        partnerCode = rawCode;
+      if (product && product.noPartnerCode) {
+        url = endpoint + "?page=" + productId;
       } else {
-        showProductCodeError();
-        productCodeInput.focus();
-        return;
-      }
+        var rawCode = productCodeInput.value.trim();
+        var partnerCode;
 
-      resetProductCodeState();
-      url = endpoint + "?page=" + productId + "&alianCoCd=" + partnerCode;
+        if (rawCode === "") {
+          partnerCode = DEFAULT_PARTNER_CODE;
+        } else if (CODE_PATTERN.test(rawCode)) {
+          partnerCode = rawCode;
+        } else {
+          showProductCodeError();
+          productCodeInput.focus();
+          return;
+        }
+
+        resetProductCodeState();
+        url = endpoint + "?page=" + productId + "&alianCoCd=" + partnerCode;
+      }
     }
 
     goBtn.disabled = true;
@@ -210,4 +253,5 @@
   setMode(currentMode);
   resetPartnerState();
   resetProductCodeState();
+  updateProductUI();
 })();

@@ -135,6 +135,11 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+.env-switch__option:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .env-dot {
   width: 6px;
   height: 6px;
@@ -398,6 +403,34 @@ body {
 
 .field-caption strong {
   color: var(--text-primary);
+}
+
+.product-alert {
+  display: none;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 2px 0 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 176, 79, 0.35);
+  background: rgba(255, 176, 79, 0.1);
+  color: #ffcf94;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.product-alert.is-visible {
+  display: flex;
+}
+
+.product-alert svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--env-staging);
+}
+
+.product-code-group.is-hidden {
+  display: none;
 }
 
 .field-caption.is-error {
