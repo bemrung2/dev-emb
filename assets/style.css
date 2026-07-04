@@ -309,6 +309,18 @@ body {
   vertical-align: middle;
 }
 
+.required-badge {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 7px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: rgba(255, 93, 93, 0.14);
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
 .field__input,
 .select-wrap select {
   width: 100%;

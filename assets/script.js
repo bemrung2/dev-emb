@@ -15,7 +15,7 @@
 
   var PRODUCTS = [
     { id: "C111967", name: "KB스타통장" },
-    { id: "C111969", name: "특별한적금" },
+    { id: "C111969", name: "특★한적금" },
     { id: "C111968", name: "KB Star 정기예금" },
     { id: "C111970", name: "주택청약종합저축" },
     { id: "C112591", name: "ONE KB 사업자통장" },
@@ -26,7 +26,7 @@
   ];
 
   var CAPTIONS = {
-    partner: "영문 대문자 + 숫자 5자리를 입력하면 해당 코드로 이동해요.",
+    partner: "영문 대문자 + 숫자 5자리를 입력하면 해당 제휴사 코드로 이동해요.",
     partnerError: "영문 대문자와 숫자를 조합한 5자리를 입력해주세요.",
     productCode: "비워두면 기본 코드 <strong>KBB01</strong>로 이동해요.",
     productCodeError: "영문 대문자와 숫자를 조합한 5자리를 입력하거나 비워두세요.",
@@ -208,4 +208,6 @@
 
   setEnv(currentEnv);
   setMode(currentMode);
+  resetPartnerState();
+  resetProductCodeState();
 })();

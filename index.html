@@ -47,7 +47,9 @@
 
     <!-- Mode 1: 제휴사 코드 입력 -->
     <section class="panel is-active" id="panel-partner" role="tabpanel">
-      <label class="field-label" for="input-partner">제휴사 코드</label>
+      <label class="field-label" for="input-partner">
+        제휴사 코드 <span class="required-badge">필수</span>
+      </label>
       <input
         id="input-partner"
         class="field__input field__input--mono"
@@ -58,15 +60,19 @@
         spellcheck="false"
         maxlength="5"
         placeholder="ABC12"
+        required
+        aria-required="true"
       />
-      <p class="field-caption" id="caption-partner">영문 대문자 + 숫자 5자리를 입력하면 해당 코드로 이동해요.</p>
+      <p class="field-caption" id="caption-partner">영문 대문자 + 숫자 5자리를 입력하면 해당 제휴사 코드로 이동해요.</p>
     </section>
 
     <!-- Mode 2: 상품 선택 -->
     <section class="panel" id="panel-product" role="tabpanel">
-      <label class="field-label" for="select-product">상품 선택</label>
+      <label class="field-label" for="select-product">
+        상품 선택 <span class="required-badge">필수</span>
+      </label>
       <div class="select-wrap">
-        <select id="select-product"></select>
+        <select id="select-product" required aria-required="true"></select>
         <svg class="select-wrap__chevron" width="14" height="9" viewBox="0 0 14 9" fill="none" aria-hidden="true">
           <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
