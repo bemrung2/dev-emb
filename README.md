@@ -1,4 +1,4 @@
-# EMFI 바로가기 브릿지 페이지
+# KB 임베디드 상품 바로가기
 
 KB국민은행 EMFI(`https://emfi.kbstar.com/quics`) 페이지로 바로 이동시켜주는 모바일 브릿지 페이지입니다.
 
