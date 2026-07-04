@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>KB EMFI 바로가기</title>
 <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -29,43 +29,46 @@
     <!-- Mode 1: 제휴사 코드 입력 -->
     <section class="panel is-active" id="panel-partner" role="tabpanel">
       <label class="field-label" for="input-partner">제휴사 코드</label>
-      <div class="field" data-field="partner">
-        <input
-          id="input-partner"
-          class="field__input field__input--mono"
-          type="text"
-          inputmode="text"
-          autocomplete="off"
-          autocapitalize="characters"
-          spellcheck="false"
-          maxlength="5"
-          placeholder="ABC12"
-        />
-        <span class="field__hint">영문 대문자 + 숫자 5자리</span>
-      </div>
-      <p class="error-msg" id="error-partner" role="alert"></p>
-      <p class="preview" id="preview-partner"></p>
+      <input
+        id="input-partner"
+        class="field__input field__input--mono"
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        maxlength="5"
+        placeholder="ABC12"
+      />
+      <p class="field-caption" id="caption-partner">영문 대문자 + 숫자 5자리를 입력하면 해당 코드로 이동해요.</p>
     </section>
 
-    <!-- Mode 2: 페이지 ID 입력 -->
+    <!-- Mode 2: 상품 선택 -->
     <section class="panel" id="panel-product" role="tabpanel">
-      <label class="field-label" for="input-product">페이지 ID</label>
-      <div class="field" data-field="product">
-        <input
-          id="input-product"
-          class="field__input field__input--mono"
-          type="text"
-          inputmode="text"
-          autocomplete="off"
-          autocapitalize="characters"
-          spellcheck="false"
-          maxlength="10"
-          placeholder="C111966"
-        />
-        <span class="field__hint">영문 + 숫자 조합 (예: C111966)</span>
+      <label class="field-label" for="select-product">상품 선택</label>
+      <div class="select-wrap">
+        <select id="select-product"></select>
+        <svg class="select-wrap__chevron" width="14" height="9" viewBox="0 0 14 9" fill="none" aria-hidden="true">
+          <path d="M1 1.5L7 7.5L13 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
-      <p class="error-msg" id="error-product" role="alert"></p>
-      <p class="preview" id="preview-product"></p>
+      <p class="field-caption">선택한 상품 페이지로 바로 이동해요.</p>
+
+      <label class="field-label field-label--sub" for="input-product-code">
+        제휴사 코드 <span class="optional-badge">선택</span>
+      </label>
+      <input
+        id="input-product-code"
+        class="field__input field__input--mono"
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        maxlength="5"
+        placeholder="KBB01"
+      />
+      <p class="field-caption" id="caption-product-code">비워두면 기본 코드 <strong>KBB01</strong>로 이동해요.</p>
     </section>
 
     <button type="button" class="go-btn" id="go-btn">

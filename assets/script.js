@@ -3,26 +3,32 @@
 
   var ENDPOINT = "https://emfi.kbstar.com/quics";
   var FIXED_PAGE_ID = "C111966";
-  var FIXED_PARTNER_CODE = "KBB01";
+  var DEFAULT_PARTNER_CODE = "KBB01";
   var STORAGE_KEY = "emfi-bridge-mode";
+  var CODE_PATTERN = /^[A-Z0-9]{5}$/;
 
-  var MODES = {
-    partner: {
-      pattern: /^[A-Z0-9]{5}$/,
-      error: "영문 대문자와 숫자를 조합한 5자리를 입력해주세요.",
-      footer: "제휴사 코드로 EMFI 페이지에 접속합니다.",
-      buildUrl: function (value) {
-        return ENDPOINT + "?page=" + FIXED_PAGE_ID + "&alianCoCd=" + value;
-      },
-    },
-    product: {
-      pattern: /^[A-Z][A-Z0-9]{3,9}$/,
-      error: "영문으로 시작하는 4~10자리 페이지 ID를 입력해주세요. (예: C111966)",
-      footer: "페이지 ID로 상품 목록 페이지에 접속합니다.",
-      buildUrl: function (value) {
-        return ENDPOINT + "?page=" + value + "&alianCoCd=" + FIXED_PARTNER_CODE;
-      },
-    },
+  var PRODUCTS = [
+    { id: "C111967", name: "KB스타통장" },
+    { id: "C111969", name: "특별한적금" },
+    { id: "C111968", name: "KB Star 정기예금" },
+    { id: "C111970", name: "주택청약종합저축" },
+    { id: "C112591", name: "ONE KB 사업자통장" },
+    { id: "C112685", name: "KB 맑은하늘적금" },
+    { id: "C112646", name: "가맹점등록/결제계좌변경" },
+    { id: "C111974", name: "외화 선물하기" },
+    { id: "C111971", name: "비회원 환전" },
+  ];
+
+  var CAPTIONS = {
+    partner: "영문 대문자 + 숫자 5자리를 입력하면 해당 코드로 이동해요.",
+    partnerError: "영문 대문자와 숫자를 조합한 5자리를 입력해주세요.",
+    productCode: "비워두면 기본 코드 <strong>KBB01</strong>로 이동해요.",
+    productCodeError: "영문 대문자와 숫자를 조합한 5자리를 입력하거나 비워두세요.",
+  };
+
+  var FOOTER = {
+    partner: "제휴사 코드로 EMFI 페이지에 접속합니다.",
+    product: "선택한 상품의 EMFI 페이지에 접속합니다.",
   };
 
   var toggleEl = document.querySelector(".toggle");
@@ -31,22 +37,22 @@
     partner: document.getElementById("panel-partner"),
     product: document.getElementById("panel-product"),
   };
-  var inputs = {
-    partner: document.getElementById("input-partner"),
-    product: document.getElementById("input-product"),
-  };
-  var errorEls = {
-    partner: document.getElementById("error-partner"),
-    product: document.getElementById("error-product"),
-  };
-  var previewEls = {
-    partner: document.getElementById("preview-partner"),
-    product: document.getElementById("preview-product"),
-  };
+  var partnerInput = document.getElementById("input-partner");
+  var partnerCaption = document.getElementById("caption-partner");
+  var productSelect = document.getElementById("select-product");
+  var productCodeInput = document.getElementById("input-product-code");
+  var productCodeCaption = document.getElementById("caption-product-code");
   var footerDesc = document.getElementById("footer-desc");
   var goBtn = document.getElementById("go-btn");
 
   var currentMode = localStorage.getItem(STORAGE_KEY) || "partner";
+
+  PRODUCTS.forEach(function (product) {
+    var option = document.createElement("option");
+    option.value = product.id;
+    option.textContent = product.name;
+    productSelect.appendChild(option);
+  });
 
   function sanitize(raw) {
     return raw.toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -67,38 +73,34 @@
       panels[key].classList.toggle("is-active", key === mode);
     });
 
-    footerDesc.textContent = MODES[mode].footer;
-    updatePreview(mode);
+    footerDesc.textContent = FOOTER[mode];
   }
 
-  function updatePreview(mode) {
-    var value = inputs[mode].value;
-    var config = MODES[mode];
-    if (config.pattern.test(value)) {
-      previewEls[mode].textContent = "이동 위치: " + config.buildUrl(value);
-    } else {
-      previewEls[mode].textContent = "";
-    }
+  function resetPartnerState() {
+    partnerCaption.innerHTML = CAPTIONS.partner;
+    partnerCaption.classList.remove("is-error");
+    partnerInput.classList.remove("is-invalid");
   }
 
-  function clearError(mode) {
-    errorEls[mode].textContent = "";
-    inputs[mode].classList.remove("is-invalid");
+  function resetProductCodeState() {
+    productCodeCaption.innerHTML = CAPTIONS.productCode;
+    productCodeCaption.classList.remove("is-error");
+    productCodeInput.classList.remove("is-invalid");
   }
 
-  function showError(mode) {
-    errorEls[mode].textContent = MODES[mode].error;
-    inputs[mode].classList.add("is-invalid");
+  function showPartnerError() {
+    partnerCaption.innerHTML = CAPTIONS.partnerError;
+    partnerCaption.classList.add("is-error");
+    partnerInput.classList.add("is-invalid");
   }
 
-  toggleButtons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      setMode(btn.getAttribute("data-mode"));
-    });
-  });
+  function showProductCodeError() {
+    productCodeCaption.innerHTML = CAPTIONS.productCodeError;
+    productCodeCaption.classList.add("is-error");
+    productCodeInput.classList.add("is-invalid");
+  }
 
-  Object.keys(inputs).forEach(function (mode) {
-    var input = inputs[mode];
+  function bindSanitizedInput(input, onChange) {
     input.addEventListener("input", function () {
       var caret = input.selectionStart;
       var before = input.value;
@@ -107,8 +109,7 @@
         var diff = before.length - input.value.length;
         input.setSelectionRange(caret - diff, caret - diff);
       }
-      clearError(mode);
-      updatePreview(mode);
+      onChange();
     });
     input.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
@@ -116,24 +117,50 @@
         submit();
       }
     });
+  }
+
+  toggleButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setMode(btn.getAttribute("data-mode"));
+    });
   });
 
-  function submit() {
-    var mode = currentMode;
-    var config = MODES[mode];
-    var value = inputs[mode].value.trim();
+  bindSanitizedInput(partnerInput, resetPartnerState);
+  bindSanitizedInput(productCodeInput, resetProductCodeState);
 
-    if (!config.pattern.test(value)) {
-      showError(mode);
-      inputs[mode].focus();
-      return;
+  function submit() {
+    var url;
+
+    if (currentMode === "partner") {
+      var code = partnerInput.value.trim();
+      if (!CODE_PATTERN.test(code)) {
+        showPartnerError();
+        partnerInput.focus();
+        return;
+      }
+      resetPartnerState();
+      url = ENDPOINT + "?page=" + FIXED_PAGE_ID + "&alianCoCd=" + code;
+    } else {
+      var productId = productSelect.value;
+      var rawCode = productCodeInput.value.trim();
+      var partnerCode;
+
+      if (rawCode === "") {
+        partnerCode = DEFAULT_PARTNER_CODE;
+      } else if (CODE_PATTERN.test(rawCode)) {
+        partnerCode = rawCode;
+      } else {
+        showProductCodeError();
+        productCodeInput.focus();
+        return;
+      }
+
+      resetProductCodeState();
+      url = ENDPOINT + "?page=" + productId + "&alianCoCd=" + partnerCode;
     }
 
-    clearError(mode);
     goBtn.disabled = true;
     goBtn.classList.add("is-loading");
-
-    var url = config.buildUrl(value);
     setTimeout(function () {
       window.location.href = url;
     }, 350);
