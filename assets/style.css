@@ -247,7 +247,11 @@ body {
   -webkit-appearance: none;
   letter-spacing: 0;
   font-family: inherit;
-  padding-right: 40px;
+  font-size: 0.96rem;
+  padding-right: 38px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
 }
 
@@ -334,18 +338,6 @@ body {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-.card__footer {
-  margin-top: clamp(10px, 2vh, 16px);
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.card__footer p {
-  margin: 0;
-  font-size: 0.72rem;
-  color: var(--text-muted);
 }
 
 @media (max-height: 620px) {

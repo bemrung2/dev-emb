@@ -26,9 +26,9 @@
     productCodeError: "영문 대문자와 숫자를 조합한 5자리를 입력하거나 비워두세요.",
   };
 
-  var FOOTER = {
-    partner: "제휴사 코드로 EMFI 페이지에 접속합니다.",
-    product: "선택한 상품의 EMFI 페이지에 접속합니다.",
+  var SUBTITLES = {
+    partner: "브릿지페이지(C111966)로 이동해요",
+    product: "페이지ID로 바로 이동해요",
   };
 
   var toggleEl = document.querySelector(".toggle");
@@ -42,7 +42,7 @@
   var productSelect = document.getElementById("select-product");
   var productCodeInput = document.getElementById("input-product-code");
   var productCodeCaption = document.getElementById("caption-product-code");
-  var footerDesc = document.getElementById("footer-desc");
+  var subtitleEl = document.getElementById("subtitle");
   var goBtn = document.getElementById("go-btn");
 
   var currentMode = localStorage.getItem(STORAGE_KEY) || "partner";
@@ -50,7 +50,7 @@
   PRODUCTS.forEach(function (product) {
     var option = document.createElement("option");
     option.value = product.id;
-    option.textContent = product.name;
+    option.textContent = product.name + " · " + product.id;
     productSelect.appendChild(option);
   });
 
@@ -73,7 +73,7 @@
       panels[key].classList.toggle("is-active", key === mode);
     });
 
-    footerDesc.textContent = FOOTER[mode];
+    subtitleEl.textContent = SUBTITLES[mode];
   }
 
   function resetPartnerState() {
