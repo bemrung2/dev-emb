@@ -9,7 +9,20 @@
 <body>
   <div class="bg-glow"></div>
 
-  <main class="card">
+  <main class="card" id="card">
+    <div class="env-switch" role="tablist" aria-label="환경 선택">
+      <button type="button" class="env-switch__option" data-env="dev" role="tab" aria-selected="false">
+        <span class="env-dot"></span>개발
+      </button>
+      <button type="button" class="env-switch__option" data-env="staging" role="tab" aria-selected="false">
+        <span class="env-dot"></span>스테이징
+      </button>
+      <button type="button" class="env-switch__option is-active" data-env="prod" role="tab" aria-selected="true">
+        <span class="env-dot"></span>운영
+      </button>
+    </div>
+    <p class="env-domain" id="env-domain">emfi.kbstar.com</p>
+
     <header class="card__header">
       <div class="logo-badge" aria-hidden="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">

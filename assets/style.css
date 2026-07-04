@@ -8,6 +8,9 @@
   --text-primary: #f5f7fa;
   --text-muted: rgba(245, 247, 250, 0.6);
   --danger: #ff5d5d;
+  --env-dev: #4fa8ff;
+  --env-staging: #ffb04f;
+  --env-prod: #3ddc97;
   --radius-lg: clamp(18px, 5vh, 24px);
   --radius-md: 14px;
   font-size: 16px;
@@ -70,6 +73,30 @@ body {
   display: none;
 }
 
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--env-prod);
+  transition: background 0.25s ease;
+}
+
+.card.env-dev::before {
+  background: var(--env-dev);
+}
+
+.card.env-staging::before {
+  background: var(--env-staging);
+}
+
+.card.env-prod::before {
+  background: var(--env-prod);
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -79,6 +106,85 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Environment switch */
+.env-switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.env-switch__option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 4px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.env-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.env-switch__option[data-env="dev"] .env-dot {
+  background: var(--env-dev);
+}
+
+.env-switch__option[data-env="staging"] .env-dot {
+  background: var(--env-staging);
+}
+
+.env-switch__option[data-env="prod"] .env-dot {
+  background: var(--env-prod);
+}
+
+.env-switch__option.is-active .env-dot {
+  opacity: 1;
+}
+
+.env-switch__option.is-active[data-env="dev"] {
+  background: rgba(79, 168, 255, 0.14);
+  border-color: var(--env-dev);
+  color: var(--env-dev);
+}
+
+.env-switch__option.is-active[data-env="staging"] {
+  background: rgba(255, 176, 79, 0.14);
+  border-color: var(--env-staging);
+  color: var(--env-staging);
+}
+
+.env-switch__option.is-active[data-env="prod"] {
+  background: rgba(61, 220, 151, 0.14);
+  border-color: var(--env-prod);
+  color: var(--env-prod);
+}
+
+.env-domain {
+  text-align: center;
+  margin: 0 0 clamp(10px, 2.5vh, 18px);
+  font-size: 0.68rem;
+  font-family: "SF Mono", "Roboto Mono", ui-monospace, monospace;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
 }
 
 .card__header {

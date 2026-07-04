@@ -1,11 +1,17 @@
 (function () {
   "use strict";
 
-  var ENDPOINT = "https://emfi.kbstar.com/quics";
   var FIXED_PAGE_ID = "C111966";
   var DEFAULT_PARTNER_CODE = "KBB01";
   var STORAGE_KEY = "emfi-bridge-mode";
+  var ENV_STORAGE_KEY = "emfi-bridge-env";
   var CODE_PATTERN = /^[A-Z0-9]{5}$/;
+
+  var ENVIRONMENTS = {
+    dev: { label: "개발", domain: "zemfi.kbstar.com" },
+    staging: { label: "스테이징", domain: "yemfi.kbstar.com" },
+    prod: { label: "운영", domain: "emfi.kbstar.com" },
+  };
 
   var PRODUCTS = [
     { id: "C111967", name: "KB스타통장" },
@@ -31,6 +37,9 @@
     product: "페이지ID로 바로 이동해요",
   };
 
+  var cardEl = document.getElementById("card");
+  var envButtons = document.querySelectorAll(".env-switch__option");
+  var envDomainEl = document.getElementById("env-domain");
   var toggleEl = document.querySelector(".toggle");
   var toggleButtons = document.querySelectorAll(".toggle__option");
   var panels = {
@@ -46,6 +55,9 @@
   var goBtn = document.getElementById("go-btn");
 
   var currentMode = localStorage.getItem(STORAGE_KEY) || "partner";
+  var currentEnv = ENVIRONMENTS[localStorage.getItem(ENV_STORAGE_KEY)]
+    ? localStorage.getItem(ENV_STORAGE_KEY)
+    : "prod";
 
   PRODUCTS.forEach(function (product) {
     var option = document.createElement("option");
@@ -56,6 +68,25 @@
 
   function sanitize(raw) {
     return raw.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  }
+
+  function getEndpoint() {
+    return "https://" + ENVIRONMENTS[currentEnv].domain + "/quics";
+  }
+
+  function setEnv(env) {
+    currentEnv = env;
+    localStorage.setItem(ENV_STORAGE_KEY, env);
+
+    envButtons.forEach(function (btn) {
+      var isActive = btn.getAttribute("data-env") === env;
+      btn.classList.toggle("is-active", isActive);
+      btn.setAttribute("aria-selected", String(isActive));
+    });
+
+    cardEl.classList.remove("env-dev", "env-staging", "env-prod");
+    cardEl.classList.add("env-" + env);
+    envDomainEl.textContent = ENVIRONMENTS[env].domain;
   }
 
   function setMode(mode) {
@@ -125,11 +156,18 @@
     });
   });
 
+  envButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setEnv(btn.getAttribute("data-env"));
+    });
+  });
+
   bindSanitizedInput(partnerInput, resetPartnerState);
   bindSanitizedInput(productCodeInput, resetProductCodeState);
 
   function submit() {
     var url;
+    var endpoint = getEndpoint();
 
     if (currentMode === "partner") {
       var code = partnerInput.value.trim();
@@ -139,7 +177,7 @@
         return;
       }
       resetPartnerState();
-      url = ENDPOINT + "?page=" + FIXED_PAGE_ID + "&alianCoCd=" + code;
+      url = endpoint + "?page=" + FIXED_PAGE_ID + "&alianCoCd=" + code;
     } else {
       var productId = productSelect.value;
       var rawCode = productCodeInput.value.trim();
@@ -156,7 +194,7 @@
       }
 
       resetProductCodeState();
-      url = ENDPOINT + "?page=" + productId + "&alianCoCd=" + partnerCode;
+      url = endpoint + "?page=" + productId + "&alianCoCd=" + partnerCode;
     }
 
     goBtn.disabled = true;
@@ -168,5 +206,6 @@
 
   goBtn.addEventListener("click", submit);
 
+  setEnv(currentEnv);
   setMode(currentMode);
 })();
