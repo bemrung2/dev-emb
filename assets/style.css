@@ -491,44 +491,97 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* Footer link (bottom menu on main page) */
-.footer-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+/* Brand shortcuts (bottom menu on main page) */
+.brand-shortcuts {
   margin-top: clamp(14px, 3vh, 20px);
   padding-top: clamp(12px, 2.5vh, 16px);
   border-top: 1px dashed var(--card-border);
-  color: var(--text-muted);
-  font-size: 0.76rem;
-  font-weight: 600;
-  text-decoration: none;
   flex-shrink: 0;
+}
+
+.brand-shortcuts__label {
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.brand-shortcuts__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.brand-shortcut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brand-shortcut:active {
+  transform: scale(0.97);
+}
+
+.brand-shortcut__icon {
+  font-size: 1.4rem;
+}
+
+.brand-shortcut__name {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.brand-shortcut__code {
+  font-size: 0.62rem;
+  font-family: "SF Mono", "Roboto Mono", ui-monospace, monospace;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
   transition: color 0.2s ease;
 }
 
-.footer-link:hover,
-.footer-link:active {
+.brand-shortcut--stb:hover,
+.brand-shortcut--stb:focus-visible {
+  border-color: #1db876;
+  background: rgba(29, 184, 118, 0.1);
+}
+
+.brand-shortcut--stb:hover .brand-shortcut__code,
+.brand-shortcut--stb:focus-visible .brand-shortcut__code {
   color: #1db876;
 }
 
-.footer-link__icon {
-  font-size: 0.95rem;
+.brand-shortcut--gsr:hover,
+.brand-shortcut--gsr:focus-visible {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
 }
 
-.footer-link__arrow {
-  transition: transform 0.2s ease;
-}
-
-.footer-link:hover .footer-link__arrow {
-  transform: translateX(2px);
+.brand-shortcut--gsr:hover .brand-shortcut__code,
+.brand-shortcut--gsr:focus-visible .brand-shortcut__code {
+  color: #3b82f6;
 }
 
 /* Starbucks(STB01) test page theme */
 .card.theme-stb {
   --gold: #1db876;
   --gold-soft: rgba(29, 184, 118, 0.16);
+}
+
+/* GS리테일(GSR01) test page theme */
+.card.theme-gsr {
+  --gold: #3b82f6;
+  --gold-soft: rgba(59, 130, 246, 0.16);
 }
 
 .back-link {
