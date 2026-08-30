@@ -491,6 +491,191 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/* Footer link (bottom menu on main page) */
+.footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: clamp(14px, 3vh, 20px);
+  padding-top: clamp(12px, 2.5vh, 16px);
+  border-top: 1px dashed var(--card-border);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:active {
+  color: #1db876;
+}
+
+.footer-link__icon {
+  font-size: 0.95rem;
+}
+
+.footer-link__arrow {
+  transition: transform 0.2s ease;
+}
+
+.footer-link:hover .footer-link__arrow {
+  transform: translateX(2px);
+}
+
+/* Starbucks(STB01) test page theme */
+.card.theme-stb {
+  --gold: #1db876;
+  --gold-soft: rgba(29, 184, 118, 0.16);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: clamp(10px, 2vh, 16px);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.partner-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0 auto clamp(14px, 3vh, 20px);
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: "SF Mono", "Roboto Mono", ui-monospace, monospace;
+  letter-spacing: 0.03em;
+  width: fit-content;
+}
+
+/* Shortcut list */
+.shortcut-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shortcut-item {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 3px 12px;
+  padding: 14px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.2);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.shortcut-item:focus-within,
+.shortcut-item:hover {
+  border-color: var(--gold);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.shortcut-item__icon {
+  grid-row: 1 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--gold-soft);
+  font-size: 1.1rem;
+}
+
+.shortcut-item__title {
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.shortcut-item__url {
+  margin: 0;
+  font-size: 0.65rem;
+  font-family: "SF Mono", "Roboto Mono", ui-monospace, monospace;
+  color: var(--text-muted);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.shortcut-item__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.shortcut-item__go,
+.shortcut-item__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.shortcut-item__go {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--gold);
+  color: #04241a;
+}
+
+.shortcut-item__copy {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+}
+
+.shortcut-item__copy.is-copied {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.shortcut-item__copy .icon-check {
+  display: none;
+}
+
+.shortcut-item__copy.is-copied .icon-copy {
+  display: none;
+}
+
+.shortcut-item__copy.is-copied .icon-check {
+  display: block;
+}
+
+.shortcut-item__go:active,
+.shortcut-item__copy:active {
+  transform: scale(0.95);
+}
+
 @media (max-height: 620px) {
   :root {
     font-size: 15px;
