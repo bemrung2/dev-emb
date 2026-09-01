@@ -11,6 +11,12 @@
     prod: { label: "운영", domain: "emfi.kbstar.com" },
   };
 
+  var CARD_DOMAINS = {
+    dev: "rm.kbcard.com",
+    staging: "tm.kbcard.com",
+    prod: "m.kbcard.com",
+  };
+
   var cardEl = document.getElementById("card");
   var envButtons = document.querySelectorAll(".env-switch__option");
   var envDomainEl = document.getElementById("env-domain");
@@ -33,12 +39,30 @@
     );
   }
 
+  function buildCardUrl(allianceCode) {
+    return (
+      "https://" +
+      CARD_DOMAINS[currentEnv] +
+      "/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&inAppChnCd=B03&solicitorcode=2960100BBB&jehuId=KBEMB&allianceCode=" +
+      allianceCode +
+      "&serno="
+    );
+  }
+
+  function urlForItem(item) {
+    var allianceCode = item.getAttribute("data-card");
+    if (allianceCode) {
+      return buildCardUrl(allianceCode);
+    }
+    return buildUrl(item.getAttribute("data-redrt"));
+  }
+
   function refreshLinks() {
     items.forEach(function (item) {
-      var redrtPage = item.getAttribute("data-redrt");
-      var url = buildUrl(redrtPage);
-      var urlEl = document.getElementById("url-" + redrtPage);
-      var goEl = document.getElementById("go-" + redrtPage);
+      var key = item.getAttribute("data-redrt") || item.getAttribute("data-card");
+      var url = urlForItem(item);
+      var urlEl = document.getElementById("url-" + key);
+      var goEl = document.getElementById("go-" + key);
       urlEl.textContent = url.replace("https://", "");
       goEl.href = url;
     });
@@ -70,7 +94,7 @@
   items.forEach(function (item) {
     var copyBtn = item.querySelector(".shortcut-item__copy");
     copyBtn.addEventListener("click", function () {
-      var url = buildUrl(item.getAttribute("data-redrt"));
+      var url = urlForItem(item);
 
       function markCopied() {
         copyBtn.classList.add("is-copied");
