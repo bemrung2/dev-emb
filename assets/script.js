@@ -30,6 +30,7 @@
       devStagingOnly: true,
       noPartnerCode: true,
       restrictionNote: "모니모 매일이자 통장은 제휴사 코드 없이, 개발·스테이징 환경에서만 확인할 수 있는 상품이에요.",
+      pageIdByEnv: { dev: "C111802", staging: "C111802" },
     },
   ];
 
@@ -89,6 +90,13 @@
 
   function getEndpoint() {
     return "https://" + ENVIRONMENTS[currentEnv].domain + "/quics";
+  }
+
+  function getPageId(product) {
+    if (product.pageIdByEnv && product.pageIdByEnv[currentEnv]) {
+      return product.pageIdByEnv[currentEnv];
+    }
+    return product.id;
   }
 
   function setEnv(env) {
@@ -221,7 +229,7 @@
       var product = PRODUCTS_BY_ID[productId];
 
       if (product && product.noPartnerCode) {
-        url = endpoint + "?page=" + productId;
+        url = endpoint + "?page=" + getPageId(product);
       } else {
         var rawCode = productCodeInput.value.trim();
         var partnerCode;
