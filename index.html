@@ -11,13 +11,13 @@
 
   <main class="card" id="card">
     <div class="env-switch" role="tablist" aria-label="환경 선택">
-      <button type="button" class="env-switch__option" data-env="dev" role="tab" aria-selected="false">
+      <button type="button" class="env-switch__option ripple-surface" data-env="dev" role="tab" aria-selected="false">
         <span class="env-dot"></span>개발
       </button>
-      <button type="button" class="env-switch__option" data-env="staging" role="tab" aria-selected="false">
+      <button type="button" class="env-switch__option ripple-surface" data-env="staging" role="tab" aria-selected="false">
         <span class="env-dot"></span>스테이징
       </button>
-      <button type="button" class="env-switch__option is-active" data-env="prod" role="tab" aria-selected="true">
+      <button type="button" class="env-switch__option ripple-surface is-active" data-env="prod" role="tab" aria-selected="true">
         <span class="env-dot"></span>운영
       </button>
     </div>
@@ -36,10 +36,10 @@
     </header>
 
     <div class="toggle" role="tablist" aria-label="이동 모드 선택">
-      <button type="button" class="toggle__option is-active" data-mode="partner" role="tab" aria-selected="true">
+      <button type="button" class="toggle__option ripple-surface is-active" data-mode="partner" role="tab" aria-selected="true">
         제휴사 코드
       </button>
-      <button type="button" class="toggle__option" data-mode="product" role="tab" aria-selected="false">
+      <button type="button" class="toggle__option ripple-surface" data-mode="product" role="tab" aria-selected="false">
         상품 목록
       </button>
       <span class="toggle__thumb" aria-hidden="true"></span>
@@ -106,7 +106,7 @@
       </div>
     </section>
 
-    <button type="button" class="go-btn" id="go-btn">
+    <button type="button" class="go-btn ripple-surface" id="go-btn">
       <span class="go-btn__label">이동하기</span>
       <span class="go-btn__spinner" aria-hidden="true"></span>
     </button>
@@ -114,12 +114,12 @@
     <div class="brand-shortcuts">
       <p class="brand-shortcuts__label">제휴사 전용 테스트</p>
       <div class="brand-shortcuts__grid">
-        <a class="brand-shortcut brand-shortcut--stb" href="starbucks.html">
+        <a class="brand-shortcut brand-shortcut--stb ripple-surface" href="starbucks.html">
           <span class="brand-shortcut__icon" aria-hidden="true">☕</span>
           <span class="brand-shortcut__name">스타벅스</span>
           <span class="brand-shortcut__code">STB01</span>
         </a>
-        <a class="brand-shortcut brand-shortcut--gsr" href="gsretail.html">
+        <a class="brand-shortcut brand-shortcut--gsr ripple-surface" href="gsretail.html">
           <span class="brand-shortcut__icon" aria-hidden="true">🏪</span>
           <span class="brand-shortcut__name">GS리테일</span>
           <span class="brand-shortcut__code">GSR01</span>
@@ -128,6 +128,7 @@
     </div>
   </main>
 
+  <script src="assets/ripple.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>

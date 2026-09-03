@@ -1,18 +1,50 @@
 :root {
-  --bg-1: #0b1220;
-  --bg-2: #131c31;
-  --gold: #ffb800;
-  --gold-soft: rgba(255, 184, 0, 0.16);
-  --card-bg: rgba(255, 255, 255, 0.06);
-  --card-border: rgba(255, 255, 255, 0.12);
-  --text-primary: #f5f7fa;
-  --text-muted: rgba(245, 247, 250, 0.6);
-  --danger: #ff5d5d;
-  --env-dev: #4fa8ff;
+  /* Material-inspired tonal roles (dark surface, brand "gold" as primary) */
+  --md-primary: #ffb800;
+  --md-on-primary: #271b00;
+  --md-primary-container: rgba(255, 184, 0, 0.16);
+  --md-on-primary-container: #ffd97a;
+
+  --md-surface: #0b1220;
+  --md-surface-container-low: #10182a;
+  --md-surface-container: #141d33;
+  --md-surface-container-high: #1a2439;
+  --md-surface-container-highest: #212c46;
+  --md-on-surface: #f2f4f8;
+  --md-on-surface-variant: #b7bccb;
+
+  --md-outline: rgba(255, 255, 255, 0.26);
+  --md-outline-variant: rgba(255, 255, 255, 0.11);
+
+  --md-error: #ff8a80;
+  --md-error-container: rgba(255, 93, 93, 0.14);
+
+  --env-dev: #7fb2ff;
   --env-staging: #ffb04f;
-  --env-prod: #3ddc97;
-  --radius-lg: clamp(18px, 5vh, 24px);
+  --env-prod: #4ddb9e;
+
+  /* Short aliases used throughout the component rules below */
+  --gold: var(--md-primary);
+  --gold-soft: var(--md-primary-container);
+  --card-bg: var(--md-surface-container);
+  --card-border: var(--md-outline-variant);
+  --text-primary: var(--md-on-surface);
+  --text-muted: var(--md-on-surface-variant);
+  --danger: var(--md-error);
+
+  --radius-xs: 4px;
+  --radius-sm: 10px;
   --radius-md: 14px;
+  --radius-lg: clamp(20px, 5vh, 28px);
+  --radius-full: 999px;
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 3px 8px 1px rgba(0, 0, 0, 0.18);
+  --elevation-3: 0 4px 10px 3px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-emphasized: cubic-bezier(0.3, 0, 0.2, 1);
+
   font-size: 16px;
 }
 
@@ -32,11 +64,12 @@ body {
   align-items: center;
   justify-content: center;
   padding: clamp(10px, 3vh, 24px) 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo",
-    "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
-  background: radial-gradient(circle at 20% 0%, var(--bg-2), var(--bg-1) 60%);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  background: radial-gradient(circle at 20% 0%, var(--md-surface-container-low), var(--md-surface) 60%);
   color: var(--text-primary);
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .bg-glow {
@@ -46,7 +79,7 @@ body {
   pointer-events: none;
   background:
     radial-gradient(480px circle at 15% 10%, var(--gold-soft), transparent 60%),
-    radial-gradient(420px circle at 90% 85%, rgba(94, 132, 255, 0.14), transparent 60%);
+    radial-gradient(420px circle at 90% 85%, rgba(127, 178, 255, 0.12), transparent 60%);
 }
 
 .card {
@@ -57,14 +90,14 @@ body {
   max-height: 100%;
   overflow-y: auto;
   scrollbar-width: none;
-  background: var(--card-bg);
+  background: rgba(20, 29, 51, 0.78);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   padding: clamp(16px, 4vh, 28px) clamp(16px, 5vw, 24px) clamp(14px, 3vh, 22px);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  animation: rise 0.5s ease;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--elevation-3);
+  animation: rise 0.4s var(--motion-emphasized);
   display: flex;
   flex-direction: column;
 }
@@ -82,7 +115,7 @@ body {
   height: 3px;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--env-prod);
-  transition: background 0.25s ease;
+  transition: background 0.25s var(--motion-standard);
 }
 
 .card.env-dev::before {
@@ -100,15 +133,15 @@ body {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px) scale(0.99);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-/* Environment switch */
+/* Environment switch (Material segmented buttons) */
 .env-switch {
   position: relative;
   display: grid;
@@ -124,20 +157,33 @@ body {
   justify-content: center;
   gap: 5px;
   border: 1px solid var(--card-border);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--md-surface-container-low);
   color: var(--text-muted);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 6px 4px;
-  border-radius: 999px;
+  letter-spacing: 0.01em;
+  padding: 7px 4px;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s var(--motion-standard), border-color 0.2s var(--motion-standard),
+    color 0.2s var(--motion-standard);
   -webkit-tap-highlight-color: transparent;
+}
+
+.env-switch__option:focus-visible,
+.toggle__option:focus-visible,
+.go-btn:focus-visible,
+.brand-shortcut:focus-visible,
+.shortcut-item__go:focus-visible,
+.shortcut-item__copy:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .env-switch__option:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .env-dot {
@@ -166,19 +212,19 @@ body {
 }
 
 .env-switch__option.is-active[data-env="dev"] {
-  background: rgba(79, 168, 255, 0.14);
+  background: rgba(127, 178, 255, 0.16);
   border-color: var(--env-dev);
   color: var(--env-dev);
 }
 
 .env-switch__option.is-active[data-env="staging"] {
-  background: rgba(255, 176, 79, 0.14);
+  background: rgba(255, 176, 79, 0.16);
   border-color: var(--env-staging);
   color: var(--env-staging);
 }
 
 .env-switch__option.is-active[data-env="prod"] {
-  background: rgba(61, 220, 151, 0.14);
+  background: rgba(77, 219, 158, 0.16);
   border-color: var(--env-prod);
   color: var(--env-prod);
 }
@@ -203,37 +249,38 @@ body {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background: linear-gradient(135deg, var(--gold), #ff9d00);
-  color: #1a1200;
+  color: var(--md-on-primary);
   font-weight: 800;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   margin-bottom: 10px;
-  box-shadow: 0 8px 24px rgba(255, 184, 0, 0.28);
+  box-shadow: var(--elevation-1);
 }
 
 .card__header h1 {
   margin: 0 0 4px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 1.28rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
 }
 
 .subtitle {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.82rem;
+  line-height: 1.4;
 }
 
-/* Toggle */
+/* Toggle (Material segmented control) */
 .toggle {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--md-surface-container-low);
   border: 1px solid var(--card-border);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   padding: 4px;
   margin-bottom: clamp(14px, 3vh, 20px);
   flex-shrink: 0;
@@ -248,14 +295,14 @@ body {
   font-size: 0.84rem;
   font-weight: 600;
   padding: 9px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: color 0.25s ease;
+  transition: color 0.25s var(--motion-standard);
   -webkit-tap-highlight-color: transparent;
 }
 
 .toggle__option.is-active {
-  color: #1a1200;
+  color: var(--md-on-primary);
 }
 
 .toggle__thumb {
@@ -264,11 +311,11 @@ body {
   left: 4px;
   width: calc(50% - 4px);
   height: calc(100% - 8px);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--gold), #ffcf4d);
-  transition: transform 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.3s var(--motion-emphasized);
   z-index: 1;
-  box-shadow: 0 6px 16px rgba(255, 184, 0, 0.35);
+  box-shadow: var(--elevation-1);
 }
 
 .toggle[data-mode="product"] .toggle__thumb {
@@ -282,7 +329,7 @@ body {
 
 .panel.is-active {
   display: block;
-  animation: fade-in 0.25s ease;
+  animation: fade-in 0.22s var(--motion-standard);
 }
 
 @keyframes fade-in {
@@ -308,9 +355,9 @@ body {
   padding: 1px 7px;
   font-size: 0.66rem;
   font-weight: 700;
-  color: var(--gold);
+  color: var(--md-on-primary-container);
   background: var(--gold-soft);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   vertical-align: middle;
 }
 
@@ -321,24 +368,26 @@ body {
   font-size: 0.66rem;
   font-weight: 700;
   color: var(--danger);
-  background: rgba(255, 93, 93, 0.14);
-  border-radius: 999px;
+  background: var(--md-error-container);
+  border-radius: var(--radius-full);
   vertical-align: middle;
 }
 
+/* Filled text fields (Material 3 style: flat indicator, rounded top only) */
 .field__input,
 .select-wrap select {
   width: 100%;
-  padding: 13px 16px;
+  padding: 14px 16px 12px;
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--text-primary);
-  background: rgba(0, 0, 0, 0.25);
-  border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-md);
+  background: var(--md-surface-container-highest);
+  border: none;
+  border-bottom: 2px solid var(--md-outline);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s var(--motion-standard), background 0.2s var(--motion-standard);
 }
 
 .field__input--mono {
@@ -352,12 +401,12 @@ body {
 
 .field__input:focus,
 .select-wrap select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px var(--gold-soft);
+  border-bottom-color: var(--gold);
+  background: var(--md-surface-container-high);
 }
 
 .field__input.is-invalid {
-  border-color: var(--danger);
+  border-bottom-color: var(--danger);
 }
 
 /* Select (combobox) */
@@ -379,7 +428,7 @@ body {
 }
 
 .select-wrap select option {
-  background: #182238;
+  background: var(--md-surface-container-high);
   color: var(--text-primary);
   font-weight: 500;
 }
@@ -411,7 +460,7 @@ body {
   gap: 7px;
   margin: 2px 0 12px;
   padding: 8px 10px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 176, 79, 0.35);
   background: rgba(255, 176, 79, 0.1);
   color: #ffcf94;
@@ -437,16 +486,16 @@ body {
   color: var(--danger);
 }
 
-/* Button */
+/* Button (Material filled button) */
 .go-btn {
   position: relative;
   width: 100%;
   margin-top: clamp(12px, 2.5vh, 18px);
   padding: 14px;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--gold), #ff9d00);
-  color: #1a1200;
+  color: var(--md-on-primary);
   font-size: 0.98rem;
   font-weight: 700;
   cursor: pointer;
@@ -455,18 +504,26 @@ body {
   justify-content: center;
   gap: 8px;
   flex-shrink: 0;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-  box-shadow: 0 10px 28px rgba(255, 184, 0, 0.25);
+  transition: transform 0.15s var(--motion-standard), box-shadow 0.2s var(--motion-standard),
+    opacity 0.15s ease;
+  box-shadow: var(--elevation-2);
+}
+
+.go-btn:hover {
+  box-shadow: var(--elevation-3);
 }
 
 .go-btn:active {
   transform: scale(0.98);
+  box-shadow: var(--elevation-1);
 }
 
 .go-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+  pointer-events: none;
   transform: none;
+  box-shadow: none;
 }
 
 .go-btn__spinner {
@@ -474,8 +531,8 @@ body {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid rgba(26, 18, 0, 0.35);
-  border-top-color: #1a1200;
+  border: 2px solid rgba(39, 27, 0, 0.35);
+  border-top-color: var(--md-on-primary);
   animation: spin 0.7s linear infinite;
 }
 
@@ -522,11 +579,17 @@ body {
   padding: 14px 8px;
   border: 1.5px solid var(--card-border);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--md-surface-container-low);
   text-decoration: none;
   color: var(--text-primary);
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  box-shadow: var(--elevation-1);
+  transition: border-color 0.2s var(--motion-standard), background 0.2s var(--motion-standard),
+    box-shadow 0.2s var(--motion-standard), transform 0.15s var(--motion-standard);
   -webkit-tap-highlight-color: transparent;
+}
+
+.brand-shortcut:hover {
+  box-shadow: var(--elevation-2);
 }
 
 .brand-shortcut:active {
@@ -576,12 +639,16 @@ body {
 .card.theme-stb {
   --gold: #1db876;
   --gold-soft: rgba(29, 184, 118, 0.16);
+  --md-on-primary: #04241a;
+  --md-on-primary-container: #7fe8bd;
 }
 
 /* GS리테일(GSR01) test page theme */
 .card.theme-gsr {
   --gold: #3b82f6;
   --gold-soft: rgba(59, 130, 246, 0.16);
+  --md-on-primary: #0a1a33;
+  --md-on-primary-container: #a9c8ff;
 }
 
 .back-link {
@@ -594,6 +661,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   flex-shrink: 0;
+  transition: color 0.2s ease;
 }
 
 .back-link:hover {
@@ -607,7 +675,7 @@ body {
   gap: 5px;
   margin: 0 auto clamp(14px, 3vh, 20px);
   padding: 5px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--gold-soft);
   color: var(--gold);
   font-size: 0.72rem;
@@ -631,14 +699,17 @@ body {
   padding: 14px;
   border: 1.5px solid var(--card-border);
   border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.2);
-  transition: border-color 0.2s ease, background 0.2s ease;
+  background: var(--md-surface-container-low);
+  box-shadow: var(--elevation-1);
+  transition: border-color 0.2s var(--motion-standard), background 0.2s var(--motion-standard),
+    box-shadow 0.2s var(--motion-standard);
 }
 
 .shortcut-item:focus-within,
 .shortcut-item:hover {
   border-color: var(--gold);
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--md-surface-container);
+  box-shadow: var(--elevation-2);
 }
 
 .shortcut-item__icon {
@@ -648,7 +719,7 @@ body {
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: var(--gold-soft);
   font-size: 1.1rem;
 }
@@ -681,20 +752,20 @@ body {
   justify-content: center;
   gap: 5px;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s var(--motion-standard), opacity 0.15s ease;
 }
 
 .shortcut-item__go {
   flex: 1;
   padding: 9px 12px;
   background: var(--gold);
-  color: #04241a;
+  color: var(--md-on-primary);
 }
 
 .shortcut-item__copy {
@@ -702,7 +773,7 @@ body {
   height: 34px;
   padding: 0;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--md-surface-container-highest);
   border: 1px solid var(--card-border);
   color: var(--text-muted);
 }
@@ -727,6 +798,63 @@ body {
 .shortcut-item__go:active,
 .shortcut-item__copy:active {
   transform: scale(0.95);
+}
+
+/* Ripple / state-layer feedback, shared across interactive surfaces */
+.ripple-surface {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ripple-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.15s var(--motion-standard);
+  pointer-events: none;
+}
+
+.ripple-surface:hover::after {
+  opacity: 0.06;
+}
+
+.ripple-surface:focus-visible::after {
+  opacity: 0.1;
+}
+
+.ripple-surface:active::after {
+  opacity: 0.14;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.25;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple-out 0.55s var(--motion-standard);
+}
+
+@keyframes ripple-out {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .panel.is-active,
+  .go-btn,
+  .toggle__thumb,
+  .ripple {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 @media (max-height: 620px) {
