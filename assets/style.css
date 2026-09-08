@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url("fonts/PretendardVariable.woff2") format("woff2-variations"), url("fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 45 920;
+  font-display: swap;
+}
+
 :root {
   /* Material-inspired tonal roles (dark surface, brand "gold" as primary) */
   --md-primary: #ffb800;
