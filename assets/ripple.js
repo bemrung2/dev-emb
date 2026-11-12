@@ -1,28 +1,37 @@
 (function () {
   "use strict";
 
-  function spawnRipple(event) {
-    var el = event.currentTarget;
-    if (el.disabled) return;
+  /* A press spreads from where the finger actually landed, and fades once it
+     lifts (or leaves/cancels) rather than on a fixed timer. */
+  function attach(node) {
+    node.addEventListener("pointerdown", function (e) {
+      if (e.button && e.button !== 0) return;
+      if (node.disabled) return;
 
-    var rect = el.getBoundingClientRect();
-    var size = Math.max(rect.width, rect.height) * 1.6;
-    var x = event.clientX - rect.left - size / 2;
-    var y = event.clientY - rect.top - size / 2;
+      var box = node.getBoundingClientRect();
+      var size = Math.max(box.width, box.height) * 2.2;
+      var ink = document.createElement("span");
+      ink.className = "ink";
+      ink.style.width = ink.style.height = size + "px";
+      ink.style.left = e.clientX - box.left - size / 2 + "px";
+      ink.style.top = e.clientY - box.top - size / 2 + "px";
+      node.insertBefore(ink, node.firstChild);
 
-    var ripple = document.createElement("span");
-    ripple.className = "ripple";
-    ripple.style.width = ripple.style.height = size + "px";
-    ripple.style.left = x + "px";
-    ripple.style.top = y + "px";
-
-    el.insertBefore(ripple, el.firstChild);
-    ripple.addEventListener("animationend", function () {
-      ripple.remove();
+      var done = false;
+      function off() {
+        if (done) return;
+        done = true;
+        ink.classList.add("out");
+        setTimeout(function () {
+          ink.remove();
+        }, 320);
+      }
+      ["pointerup", "pointercancel", "pointerleave"].forEach(function (ev) {
+        node.addEventListener(ev, off, { once: true });
+      });
+      setTimeout(off, 1200);
     });
   }
 
-  document.querySelectorAll(".ripple-surface").forEach(function (el) {
-    el.addEventListener("pointerdown", spawnRipple);
-  });
+  document.querySelectorAll(".ripple-surface").forEach(attach);
 })();
